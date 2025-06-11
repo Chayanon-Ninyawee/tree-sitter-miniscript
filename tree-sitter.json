@@ -5,9 +5,9 @@
       "name": "miniscript",
       "camelcase": "Miniscript",
       "title": "Miniscript",
-      "scope": "source.miniscript",
+      "scope": "source.ms",
       "file-types": [
-        "miniscript"
+        "ms"
       ],
       "injection-regex": "^miniscript$",
       "class-name": "TreeSitterMiniscript"
