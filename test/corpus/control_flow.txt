@@ -1,0 +1,150 @@
+==================
+Jump Statement
+==================
+
+return
+return 42
+return "done"
+break
+continue
+
+---
+
+(source_file
+  (return_statement)
+  (return_statement
+    (expression
+      (literal (number))))
+  (return_statement
+    (expression
+      (literal (string content: (string_content)))))
+  (break_statement)
+  (continue_statement)
+)
+
+==================
+If Statement - Simple If
+==================
+
+if x > 0 then
+    print("positive")
+end if
+
+---
+
+(source_file
+  (if_statement
+    condition: (expression
+      (binary_expression
+        left: (expression (identifier))
+        right: (expression (literal (number)))))
+    (block
+      (expression_statement
+        (function_call
+          name: (identifier)
+          arguments: (arguments
+            (expression
+              (literal (string content: (string_content)))))))
+    )
+  )
+)
+
+==================
+If Statement - If-Else
+==================
+
+if x == 0 then
+    print("zero")
+    print("zero")
+else
+    print("non-zero")
+end if
+
+---
+
+(source_file
+  (if_statement
+    condition: (expression
+      (binary_expression
+        left: (expression (identifier))
+        right: (expression (literal (number)))))
+    (block
+      (expression_statement
+        (function_call
+          name: (identifier)
+          arguments: (arguments
+            (expression
+              (literal (string content: (string_content)))))))
+      (expression_statement
+        (function_call
+          name: (identifier)
+          arguments: (arguments
+            (expression
+              (literal (string content: (string_content)))))))
+    )
+    alternative: (else_statement
+      (block
+        (expression_statement
+          (function_call
+            name: (identifier)
+            arguments: (arguments
+              (expression
+                (literal (string content: (string_content)))))))
+      )
+    )
+  )
+)
+
+==================
+If Statement - If-Elseif-Else
+==================
+
+if x < 0 then
+    print("negative")
+else if x > 0 then
+    print("positive")
+else
+    print("zero")
+end if
+
+---
+
+(source_file
+  (if_statement
+    condition: (expression
+      (binary_expression
+        left: (expression (identifier))
+        right: (expression (literal (number)))))
+    (block
+      (expression_statement
+        (function_call
+          name: (identifier)
+          arguments: (arguments
+            (expression
+              (literal (string content: (string_content)))))))
+    )
+    alternative: (elseif_statement
+      condition: (expression
+        (binary_expression
+          left: (expression (identifier))
+          right: (expression (literal (number)))))
+      (block
+        (expression_statement
+          (function_call
+            name: (identifier)
+            arguments: (arguments
+              (expression
+                (literal (string content: (string_content))))))))
+      )
+    alternative: (else_statement
+      (block
+        (expression_statement
+          (function_call
+            name: (identifier)
+            arguments: (arguments
+              (expression
+                (literal (string content: (string_content)))))))
+      )
+    )
+  )
+)

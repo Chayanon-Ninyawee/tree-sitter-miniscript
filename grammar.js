@@ -41,7 +41,7 @@ module.exports = grammar({
       choice(
         $._expression_statement,
         $.assignment_statement,
-        // $.jump_statement,
+        $._control_flow_statement,
         $._empty_statement,
       ),
 
@@ -49,11 +49,13 @@ module.exports = grammar({
 
     _terminator: (_) => choice(/\n/, ";"),
 
-    // NOTE: x + y | func() | object.func()
+    // NOTE: Expression Statement
+    // x + y | func() | object.func()
     _expression_statement: ($) =>
       seq(alias($.expression, $.expression_statement), $._terminator),
 
-    // NOTE: x = 1 | x = function() ... function end
+    // NOTE: Assignment Statement
+    // x = 1 | x = function() ... function end
     assignment_statement: ($) =>
       seq(
         field("left", $._assignable_expression),
@@ -91,7 +93,19 @@ module.exports = grammar({
         ),
       ),
 
-    // NOTE: Expression
+    // NOTE: Control Flow Statement
+    // if_statement | loop_statement | jump_statement
+    _control_flow_statement: ($) =>
+      seq(
+        choice(
+          // $.if_statement_shorthand,
+          $.if_statement,
+          $._jump_statement,
+        ),
+        $._terminator,
+      ),
+
+    // NOTE: Expression and Stuff
     expression: ($) =>
       choice(
         $.identifier,
@@ -223,7 +237,59 @@ module.exports = grammar({
         ),
       ),
 
-    // NOTE: Identifier, literals, etc.
+    // NOTE: Stuff for Control Flow Statement
+    // if_statement_shorthand: ($) =>
+    //   prec(
+    //     1,
+    //     choice(
+    //       seq(
+    //         "if",
+    //         field("condition", $.expression),
+    //         "then",
+    //         field("consequence", if_shorthand_body($)),
+    //       ),
+    //       seq(
+    //         "if",
+    //         field("condition", $.expression),
+    //         "then",
+    //         field("consequence", if_shorthand_body($)),
+    //         "else",
+    //         field("alternative", if_shorthand_body($)),
+    //       ),
+    //     ),
+    //   ),
+    if_statement: ($) =>
+      seq(
+        "if",
+        field("condition", $.expression),
+        "then",
+        $._terminator,
+        optional($.block),
+        repeat(field("alternative", $.elseif_statement)),
+        optional(field("alternative", $.else_statement)),
+        token("end if"),
+      ),
+    elseif_statement: ($) =>
+      seq(
+        token("else if"),
+        field("condition", $.expression),
+        "then",
+        $._terminator,
+        optional($.block),
+      ),
+    else_statement: ($) => seq("else", $._terminator, optional($.block)),
+
+    _jump_statement: ($) =>
+      choice($.return_statement, $.break_statement, $.continue_statement),
+
+    return_statement: ($) =>
+      prec.left(0, seq("return", optional($.expression))),
+
+    break_statement: (_) => "break",
+
+    continue_statement: (_) => "continue",
+
+    // NOTE: Identifier, Literals, etc.
     identifier: (_) => {
       const identifier_start =
         /[^\p{Control}\s+\-*/%@^#&~|<>=(){}\[\];:,.\\'"\d]/u;
