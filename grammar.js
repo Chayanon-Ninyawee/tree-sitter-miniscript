@@ -38,7 +38,7 @@ module.exports = grammar({
     _statement: ($) =>
       choice(
         $._expression_statement,
-        // $.assignment_statement,
+        $.assignment_statement,
         // $.jump_statement,
         $._empty_statement,
       ),
@@ -50,6 +50,44 @@ module.exports = grammar({
     // NOTE: x + y | func() | object.func()
     _expression_statement: ($) =>
       seq(alias($.expression, $.expression_statement), $._terminator),
+
+    // NOTE: x = 1 | x = function() ... function end
+    assignment_statement: ($) =>
+      seq(
+        field("left", $._assignable_expression),
+        field("operator", choice("=", "+=", "-=", "*=", "/=", "%=", "^=")),
+        field("right", choice($.expression, $.function_definition)),
+        $._terminator,
+      ),
+    _assignable_expression: ($) =>
+      choice(
+        $.identifier,
+        $.bracket_index_expression,
+        $.dot_index_expression,
+        $.parenthesized_expression,
+      ),
+
+    // NOTE: Function Definition
+    function_definition: ($) =>
+      seq(
+        token("function"),
+        field("parameters", optional($.parameters)),
+        $._terminator,
+        field("body", repeat($._statement)),
+        token("end function"),
+      ),
+    parameters: ($) => seq("(", optional($._parameter_list), ")"),
+    _parameter_list: ($) =>
+      prec(
+        2,
+        list_seq(
+          choice(
+            field("name", $.identifier),
+            seq(field("name", $.identifier), "=", field("default", $.literal)),
+          ),
+          ",",
+        ),
+      ),
 
     // NOTE: Expression
     expression: ($) =>

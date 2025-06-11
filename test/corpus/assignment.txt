@@ -1,0 +1,83 @@
+=========================
+Assignment Statement
+=========================
+
+x = 10
+name = "John"
+flag = true
+items = [1, 2, 3]
+data = {"key": "value"}
+result = a + b
+
+---
+
+(source_file
+  (assignment_statement
+    left: (identifier)
+    right: (expression (literal (number))))
+  (assignment_statement
+    left: (identifier)
+    right: (expression (literal (string content: (string_content)))))
+  (assignment_statement
+    left: (identifier)
+    right: (expression (literal (true))))
+  (assignment_statement
+    left: (identifier)
+    right: (expression (list_constructor
+      (expression (literal (number)))
+      (expression (literal (number)))
+      (expression (literal (number))))))
+  (assignment_statement
+    left: (identifier)
+    right: (expression (map_constructor
+      (pair
+        key: (expression (literal (string content: (string_content))))
+        value: (expression (literal (string content: (string_content))))))))
+  (assignment_statement
+    left: (identifier)
+    right: (expression
+      (binary_expression
+        left: (expression (identifier))
+        right: (expression (identifier)))))
+)
+
+===============================
+Assignment Statement (Function)
+===============================
+
+empty_func = function()
+end function
+foo = function(n=1)
+    print(n)
+end function
+test = function(); print("test"); end function
+
+---
+
+(source_file
+  (assignment_statement
+    left: (identifier)
+    right: (function_definition
+      parameters: (parameters)))
+  (assignment_statement
+    left: (identifier)
+    right: (function_definition
+      parameters: (parameters
+        name: (identifier)
+        default: (literal (number)))
+      body: (expression_statement
+        (function_call
+          name: (identifier)
+          arguments: (arguments
+            (expression (identifier)))))))
+  (assignment_statement
+    left: (identifier)
+    right: (function_definition
+      parameters: (parameters)
+      body: (expression_statement
+        (function_call
+          name: (identifier)
+          arguments: (arguments
+            (expression (literal
+              (string content: (string_content)))))))))
+)
