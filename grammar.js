@@ -164,7 +164,11 @@ module.exports = grammar({
     // NOTE: Only active when function have arg. e.g. foo() not foo
     function_call: ($) =>
       seq(field("name", $.iprefix_expression), field("arguments", $.arguments)),
-    arguments: ($) => seq("(", optional(list_seq($.expression, ",")), ")"),
+    arguments: ($) =>
+      choice(
+        seq("(", optional(list_seq($.expression, ",")), ")"),
+        // TODO: Add function call without () e.g. func "test", "more test"
+      ),
 
     parenthesized_expression: ($) => seq("(", $.expression, ")"),
 
