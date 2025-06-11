@@ -169,3 +169,30 @@ if true then print("true")
             (literal (string content: (string_content)))))))
   )
 )
+
+==================
+For Statement
+==================
+
+for item in list
+  print(item)
+end for
+
+---
+
+(source_file
+  (for_statement
+    variable: (identifier)
+    list: (expression
+      (identifier))
+    (block
+      (expression_statement
+        (function_call
+          name: (identifier)
+          arguments: (arguments
+            (expression
+              (identifier)))))
+    )
+  )
+)
+

@@ -178,11 +178,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "TOKEN",
-          "content": {
-            "type": "STRING",
-            "value": "function"
-          }
+          "type": "STRING",
+          "value": "function"
         },
         {
           "type": "FIELD",
@@ -360,6 +357,10 @@
             {
               "type": "SYMBOL",
               "name": "if_statement"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "for_statement"
             },
             {
               "type": "SYMBOL",
@@ -1747,6 +1748,58 @@
               "type": "BLANK"
             }
           ]
+        }
+      ]
+    },
+    "for_statement": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "for"
+        },
+        {
+          "type": "FIELD",
+          "name": "variable",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "in"
+        },
+        {
+          "type": "FIELD",
+          "name": "list",
+          "content": {
+            "type": "SYMBOL",
+            "name": "expression"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_terminator"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "block"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "end for"
+          }
         }
       ]
     },

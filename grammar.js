@@ -74,7 +74,7 @@ module.exports = grammar({
     // NOTE: Function Definition
     function_definition: ($) =>
       seq(
-        token("function"),
+        "function",
         field("parameters", optional($.parameters)),
         $._terminator,
         optional($.block),
@@ -100,6 +100,7 @@ module.exports = grammar({
         choice(
           $.if_statement_shorthand,
           $.if_statement,
+          $.for_statement,
           $.return_statement,
           $.break_statement,
           $.continue_statement,
@@ -290,6 +291,17 @@ module.exports = grammar({
         optional($.block),
       ),
     else_statement: ($) => seq("else", $._terminator, optional($.block)),
+
+    for_statement: ($) =>
+      seq(
+        "for",
+        field("variable", $.identifier),
+        "in",
+        field("list", $.expression),
+        $._terminator,
+        optional($.block),
+        token("end for"),
+      ),
 
     return_statement: ($) =>
       prec.left(0, seq("return", optional($.expression))),
