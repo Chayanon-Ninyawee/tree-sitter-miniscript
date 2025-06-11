@@ -221,6 +221,10 @@
         {
           "type": "return_statement",
           "named": true
+        },
+        {
+          "type": "while_statement",
+          "named": true
         }
       ]
     }
@@ -1037,6 +1041,10 @@
         {
           "type": "return_statement",
           "named": true
+        },
+        {
+          "type": "while_statement",
+          "named": true
         }
       ]
     }
@@ -1132,6 +1140,32 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "while_statement",
+    "named": true,
+    "fields": {
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -1287,6 +1321,10 @@
     "named": false
   },
   {
+    "type": "end while",
+    "named": false
+  },
+  {
     "type": "escape_sequence",
     "named": true
   },
@@ -1357,6 +1395,10 @@
   {
     "type": "true",
     "named": true
+  },
+  {
+    "type": "while",
+    "named": false
   },
   {
     "type": "{",

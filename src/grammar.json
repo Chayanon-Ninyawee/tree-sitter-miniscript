@@ -364,6 +364,10 @@
             },
             {
               "type": "SYMBOL",
+              "name": "while_statement"
+            },
+            {
+              "type": "SYMBOL",
               "name": "return_statement"
             },
             {
@@ -1799,6 +1803,46 @@
           "content": {
             "type": "STRING",
             "value": "end for"
+          }
+        }
+      ]
+    },
+    "while_statement": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "while"
+        },
+        {
+          "type": "FIELD",
+          "name": "condition",
+          "content": {
+            "type": "SYMBOL",
+            "name": "expression"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_terminator"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "block"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "end while"
           }
         }
       ]

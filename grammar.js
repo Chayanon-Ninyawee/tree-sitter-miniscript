@@ -101,6 +101,7 @@ module.exports = grammar({
           $.if_statement_shorthand,
           $.if_statement,
           $.for_statement,
+          $.while_statement,
           $.return_statement,
           $.break_statement,
           $.continue_statement,
@@ -301,6 +302,15 @@ module.exports = grammar({
         $._terminator,
         optional($.block),
         token("end for"),
+      ),
+
+    while_statement: ($) =>
+      seq(
+        "while",
+        field("condition", $.expression),
+        $._terminator,
+        optional($.block),
+        token("end while"),
       ),
 
     return_statement: ($) =>

@@ -196,3 +196,29 @@ end for
   )
 )
 
+==================
+While Statement
+==================
+
+while count < 10
+  print(count)
+end while
+
+---
+
+(source_file
+  (while_statement
+    condition: (expression
+      (binary_expression
+        left: (expression (identifier))
+        right: (expression (literal (number)))))
+    (block
+      (expression_statement
+        (function_call
+          name: (identifier)
+          arguments: (arguments
+            (expression (identifier)))))
+    )
+  )
+)
+
