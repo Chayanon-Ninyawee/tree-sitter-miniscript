@@ -49,6 +49,7 @@ empty_func = function()
 end function
 foo = function(n=1)
     print(n)
+    print(n)
 end function
 test = function(); print("test"); end function
 
@@ -65,19 +66,28 @@ test = function(); print("test"); end function
       parameters: (parameters
         name: (identifier)
         default: (literal (number)))
-      body: (expression_statement
-        (function_call
-          name: (identifier)
-          arguments: (arguments
-            (expression (identifier)))))))
+      (block
+        (expression_statement
+          (function_call
+            name: (identifier)
+            arguments: (arguments
+              (expression (identifier)))))
+        (expression_statement
+          (function_call
+            name: (identifier)
+            arguments: (arguments
+              (expression (identifier)))))
+      )))
   (assignment_statement
     left: (identifier)
     right: (function_definition
       parameters: (parameters)
-      body: (expression_statement
-        (function_call
-          name: (identifier)
-          arguments: (arguments
-            (expression (literal
-              (string content: (string_content)))))))))
+      (block
+        (expression_statement
+          (function_call
+            name: (identifier)
+            arguments: (arguments
+              (expression (literal
+                (string content: (string_content)))))))
+      )))
 )
