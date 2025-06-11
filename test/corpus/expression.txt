@@ -116,7 +116,7 @@ Bracket Index Expression
 
 x["key"]
 x[0]
-x[index]
+x[inner_index][outer_index]
 
 ---
 
@@ -124,15 +124,48 @@ x[index]
   (expression_statement
     (bracket_index_expression
       map: (identifier)
-      index: (expression (literal (string content: (string_content))))))
+      index: (expression
+        (literal
+          (string
+            content: (string_content))))))
   (expression_statement
     (bracket_index_expression
       map: (identifier)
-      index: (expression (literal (number)))))
+      index: (expression
+        (literal (number)))))
   (expression_statement
     (bracket_index_expression
-      map: (identifier)
+      map: (bracket_index_expression
+        map: (identifier)
+        index: (expression (identifier)))
       index: (expression (identifier))))
+)
+
+=========================
+Dot Index Expression
+=========================
+
+foo.bar
+user.name
+config.settings.value
+
+---
+
+(source_file
+  (expression_statement
+    (dot_index_expression
+      map: (identifier)
+      index: (identifier)))
+  (expression_statement
+    (dot_index_expression
+      map: (identifier)
+      index: (identifier)))
+  (expression_statement
+    (dot_index_expression
+      map: (dot_index_expression
+        map: (identifier)
+        index: (identifier))
+      index: (identifier)))
 )
 
 ==================
