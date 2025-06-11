@@ -1,0 +1,415 @@
+==================
+Identifier
+==================
+
+foo
+my_var
+变量
+café
+emoji😊
+
+---
+
+(source_file
+  (expression_statement (identifier))
+  (expression_statement (identifier))
+  (expression_statement (identifier))
+  (expression_statement (identifier))
+  (expression_statement (identifier))
+)
+
+==================
+Boolean and Null
+==================
+
+null
+false
+true
+
+---
+
+(source_file
+  (expression_statement (literal (null)))
+  (expression_statement (literal (false)))
+  (expression_statement (literal (true)))
+)
+
+==================
+Number
+==================
+
+0
+42
+3.5
+0.001
+6.022e23
+1E-9
+123E+4
+
+---
+
+(source_file
+  (expression_statement (literal (number)))
+  (expression_statement (literal (number)))
+  (expression_statement (literal (number)))
+  (expression_statement (literal (number)))
+  (expression_statement (literal (number)))
+  (expression_statement (literal (number)))
+  (expression_statement (literal (number)))
+)
+
+==================
+String
+==================
+
+"hello"
+"hello world"
+"escaped quote: "" inside"
+
+---
+
+(source_file
+  (expression_statement (literal (string content: (string_content))))
+  (expression_statement (literal (string content: (string_content))))
+  (expression_statement (literal (string content: (string_content (escape_sequence)))))
+)
+
+==================
+Slice Expression
+==================
+
+a[1:3]
+a[:end]
+a[start:]
+a[start:end]
+a[:]
+
+---
+
+(source_file
+  (expression_statement
+    (slice_expression
+      map: (identifier)
+      start: (expression (literal (number)))
+      end: (expression (literal (number)))))
+  (expression_statement
+    (slice_expression
+      map: (identifier)
+      end: (expression (identifier))))
+  (expression_statement
+    (slice_expression
+      map: (identifier)
+      start: (expression (identifier))))
+  (expression_statement
+    (slice_expression
+      map: (identifier)
+      start: (expression (identifier))
+      end: (expression (identifier))))
+  (expression_statement
+    (slice_expression
+      map: (identifier)))
+)
+
+==================
+Bracket Index Expression
+==================
+
+x["key"]
+x[0]
+x[index]
+
+---
+
+(source_file
+  (expression_statement
+    (bracket_index_expression
+      map: (identifier)
+      index: (expression (literal (string content: (string_content))))))
+  (expression_statement
+    (bracket_index_expression
+      map: (identifier)
+      index: (expression (literal (number)))))
+  (expression_statement
+    (bracket_index_expression
+      map: (identifier)
+      index: (expression (identifier))))
+)
+
+==================
+Function Call
+==================
+
+f()
+g(1)
+h("hello", x)
+
+---
+
+(source_file
+  (expression_statement
+    (function_call
+      name: (identifier)
+      arguments: (arguments)))
+  (expression_statement
+    (function_call
+      name: (identifier)
+      arguments: 
+        (arguments
+          (expression (literal (number))))))
+  (expression_statement
+    (function_call
+      name: (identifier)
+      arguments:
+        (arguments
+          (expression (literal (string content: (string_content))))
+          (expression (identifier)))))
+)
+
+==================
+Parenthesized Expression
+==================
+
+(1)
+(x)
+("hello")
+
+---
+
+(source_file
+  (expression_statement
+    (parenthesized_expression
+      (expression (literal (number)))))
+  (expression_statement
+    (parenthesized_expression
+      (expression (identifier))))
+  (expression_statement
+    (parenthesized_expression
+      (expression (literal (string content: (string_content))))))
+)
+
+==================
+List Constructor
+==================
+
+[]
+[42]
+["apple", "banana", fruit]
+[
+  a,
+  b,
+  3,
+  "done",
+]
+[x,;y,;z]
+[
+  a,
+
+  
+  b,
+  
+  3,
+  
+
+  "done",
+]
+
+---
+
+(source_file
+  (expression_statement
+    (list_constructor))
+  (expression_statement
+    (list_constructor
+      (expression (literal (number)))))
+  (expression_statement
+    (list_constructor
+      (expression (literal (string content: (string_content))))
+      (expression (literal (string content: (string_content))))
+      (expression (identifier))))
+  (expression_statement
+    (list_constructor
+      (expression (identifier))
+      (expression (identifier))
+      (expression (literal (number)))
+      (expression (literal (string content: (string_content))))))
+  (expression_statement
+    (list_constructor
+      (expression (identifier))
+      (expression (identifier))
+      (expression (identifier))))
+  (expression_statement
+    (list_constructor
+      (expression (identifier))
+      (expression (identifier))
+      (expression (literal (number)))
+      (expression (literal (string content: (string_content))))))
+)
+
+==================
+Map Constructor
+==================
+
+{}
+{"a": 1}
+{
+  10:1,
+  20:2,
+  30:3,
+}
+{
+  "name": "John",
+  age: 17,
+  "active": true,
+}
+{
+  a:1,
+
+
+  b:
+
+2,
+}
+{"a": 1,;"b": 2,;"c": 3}
+
+---
+
+(source_file
+  (expression_statement
+    (map_constructor))
+  (expression_statement
+    (map_constructor
+      (pair
+        key: (expression (literal (string content: (string_content))))
+        value: (expression (literal (number))))))
+  (expression_statement
+    (map_constructor
+      (pair
+        key: (expression (literal (number)))
+        value: (expression (literal (number))))
+      (pair
+        key: (expression (literal (number)))
+        value: (expression (literal (number))))
+      (pair
+        key: (expression (literal (number)))
+        value: (expression (literal (number))))))
+  (expression_statement
+    (map_constructor
+      (pair
+        key: (expression (literal (string content: (string_content))))
+        value: (expression (literal (string content: (string_content)))))
+      (pair
+        key: (expression (identifier))
+        value: (expression (literal (number))))
+      (pair
+        key: (expression (literal (string content: (string_content))))
+        value: (expression (literal (true))))))
+  (expression_statement
+    (map_constructor
+      (pair
+        key: (expression (identifier))
+        value: (expression (literal (number))))
+      (pair
+        key: (expression (identifier))
+        value: (expression (literal (number))))))
+  (expression_statement
+    (map_constructor
+      (pair
+        key: (expression (literal (string content: (string_content))))
+        value: (expression (literal (number))))
+      (pair
+        key: (expression (literal (string content: (string_content))))
+        value: (expression (literal (number))))
+      (pair
+        key: (expression (literal (string content: (string_content))))
+        value: (expression (literal (number))))))
+)
+
+==================
+Binary Expression
+==================
+
+1 + 2
+x * y
+a / 10
+x % 2
+true and false
+x or y
+value isa number
+4 == 4
+score > high_score
+a ^ b
+
+---
+
+(source_file
+  (expression_statement
+    (binary_expression
+      left: (expression (literal (number)))
+      right: (expression (literal (number)))))
+  (expression_statement
+    (binary_expression
+      left: (expression (identifier))
+      right: (expression (identifier))))
+  (expression_statement
+    (binary_expression
+      left: (expression (identifier))
+      right: (expression (literal (number)))))
+  (expression_statement
+    (binary_expression
+      left: (expression (identifier))
+      right: (expression (literal (number)))))
+  (expression_statement
+    (binary_expression
+      left: (expression (literal (true)))
+      right: (expression (literal (false)))))
+  (expression_statement
+    (binary_expression
+      left: (expression (identifier))
+      right: (expression (identifier))))
+  (expression_statement
+    (binary_expression
+      left: (expression (identifier))
+      right: (expression (identifier))))
+  (expression_statement
+    (binary_expression
+      left: (expression (literal (number)))
+      right: (expression (literal (number)))))
+  (expression_statement
+    (binary_expression
+      left: (expression (identifier))
+      right: (expression (identifier))))
+  (expression_statement
+    (binary_expression
+      left: (expression (identifier))
+      right: (expression (identifier))))
+)
+
+==================
+Unary Expression
+==================
+
+not true
+@foo
+- value
++42
+new Object
+
+---
+
+(source_file
+  (expression_statement
+    (unary_expression
+      operand: (expression (literal (true)))))
+  (expression_statement
+    (unary_expression
+      operand: (expression (identifier))))
+  (expression_statement
+    (unary_expression
+      operand: (expression (identifier))))
+  (expression_statement
+    (unary_expression
+      operand: (expression (literal (number)))))
+  (expression_statement
+    (unary_expression
+      operand: (expression (identifier))))
+)

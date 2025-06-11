@@ -1,0 +1,39 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
+  "grammars": [
+    {
+      "name": "miniscript",
+      "camelcase": "Miniscript",
+      "title": "Miniscript",
+      "scope": "source.miniscript",
+      "file-types": [
+        "miniscript"
+      ],
+      "injection-regex": "^miniscript$",
+      "class-name": "TreeSitterMiniscript"
+    }
+  ],
+  "metadata": {
+    "version": "0.0.0",
+    "license": "MIT",
+    "description": "Miniscript grammar for tree-sitter",
+    "authors": [
+      {
+        "name": "Garfieldcmix",
+        "email": "chayanon.nin@gmail.com"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/Chayanon-Ninyawee/tree-sitter-miniscript"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true,
+    "zig": false
+  }
+}
