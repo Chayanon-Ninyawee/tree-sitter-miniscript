@@ -28,7 +28,7 @@ module.exports = grammar({
 
   extras: ($) => [$.comment, " ", /\t/, /\r/, /\f/],
 
-  inline: ($) => [$.iprefix_expression],
+  inline: ($) => [$.iprefix_expression, $.if_shorthand_body_inline],
 
   word: ($) => $.identifier,
 
@@ -97,11 +97,7 @@ module.exports = grammar({
     // if_statement | loop_statement | jump_statement
     _control_flow_statement: ($) =>
       seq(
-        choice(
-          // $.if_statement_shorthand,
-          $.if_statement,
-          $._jump_statement,
-        ),
+        choice($.if_statement_shorthand, $.if_statement, $._jump_statement),
         $._terminator,
       ),
 
@@ -238,26 +234,34 @@ module.exports = grammar({
       ),
 
     // NOTE: Stuff for Control Flow Statement
-    // if_statement_shorthand: ($) =>
-    //   prec(
-    //     1,
-    //     choice(
-    //       seq(
-    //         "if",
-    //         field("condition", $.expression),
-    //         "then",
-    //         field("consequence", if_shorthand_body($)),
-    //       ),
-    //       seq(
-    //         "if",
-    //         field("condition", $.expression),
-    //         "then",
-    //         field("consequence", if_shorthand_body($)),
-    //         "else",
-    //         field("alternative", if_shorthand_body($)),
-    //       ),
-    //     ),
-    //   ),
+    if_statement_shorthand: ($) =>
+      choice(
+        seq(
+          "if",
+          field("condition", $.expression),
+          "then",
+          $.if_shorthand_body_inline,
+        ),
+        seq(
+          "if",
+          field("condition", $.expression),
+          "then",
+          $.if_shorthand_body_inline,
+          "else",
+          $.if_shorthand_body_inline,
+        ),
+      ),
+    // TODO: Make this cleaner since this is kinda repeat each statement
+    if_shorthand_body_inline: ($) =>
+      choice(
+        alias($.expression, $.expression_statement),
+        seq(
+          field("left", $._assignable_expression),
+          field("operator", choice("=", "+=", "-=", "*=", "/=", "%=", "^=")),
+          field("right", choice($.expression, $.function_definition)),
+        ),
+        $._jump_statement,
+      ),
     if_statement: ($) =>
       seq(
         "if",

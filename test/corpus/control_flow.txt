@@ -148,3 +148,24 @@ end if
     )
   )
 )
+
+==================
+If Shorthand Statement
+==================
+
+if true then print("true")
+
+---
+
+(source_file
+  (if_statement_shorthand
+    condition: (expression
+      (literal (true)))
+    (expression_statement
+      (function_call
+        name: (identifier)
+        arguments: (arguments
+          (expression
+            (literal (string content: (string_content)))))))
+  )
+)
