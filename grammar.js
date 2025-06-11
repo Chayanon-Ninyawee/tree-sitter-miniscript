@@ -97,7 +97,13 @@ module.exports = grammar({
     // if_statement | loop_statement | jump_statement
     _control_flow_statement: ($) =>
       seq(
-        choice($.if_statement_shorthand, $.if_statement, $._jump_statement),
+        choice(
+          $.if_statement_shorthand,
+          $.if_statement,
+          $.return_statement,
+          $.break_statement,
+          $.continue_statement,
+        ),
         $._terminator,
       ),
 
@@ -260,7 +266,9 @@ module.exports = grammar({
           field("operator", choice("=", "+=", "-=", "*=", "/=", "%=", "^=")),
           field("right", choice($.expression, $.function_definition)),
         ),
-        $._jump_statement,
+        $.return_statement,
+        $.break_statement,
+        $.continue_statement,
       ),
     if_statement: ($) =>
       seq(
@@ -282,9 +290,6 @@ module.exports = grammar({
         optional($.block),
       ),
     else_statement: ($) => seq("else", $._terminator, optional($.block)),
-
-    _jump_statement: ($) =>
-      choice($.return_statement, $.break_statement, $.continue_statement),
 
     return_statement: ($) =>
       prec.left(0, seq("return", optional($.expression))),
