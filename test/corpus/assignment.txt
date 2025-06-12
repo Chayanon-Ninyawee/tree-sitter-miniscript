@@ -13,32 +13,31 @@ result = a + b
 
 (source_file
   (assignment_statement
-    left: (identifier)
-    right: (expression (literal (number))))
+    (variable (identifier))
+    (literal (number)))
   (assignment_statement
-    left: (identifier)
-    right: (expression (literal (string content: (string_content)))))
+    (variable (identifier))
+    (literal (string content: (string_content))))
   (assignment_statement
-    left: (identifier)
-    right: (expression (literal (true))))
+    (variable (identifier))
+    (literal (true)))
   (assignment_statement
-    left: (identifier)
-    right: (expression (list_constructor
-      (expression (literal (number)))
-      (expression (literal (number)))
-      (expression (literal (number))))))
+    (variable (identifier))
+    (list_constructor
+      (literal (number))
+      (literal (number))
+      (literal (number))))
   (assignment_statement
-    left: (identifier)
-    right: (expression (map_constructor
+    (variable (identifier))
+    (map_constructor
       (pair
-        key: (expression (literal (string content: (string_content))))
-        value: (expression (literal (string content: (string_content))))))))
+        key: (literal (string content: (string_content)))
+        value: (literal (string content: (string_content))))))
   (assignment_statement
-    left: (identifier)
-    right: (expression
-      (binary_expression
-        left: (expression (identifier))
-        right: (expression (identifier)))))
+    (variable (identifier))
+    (binary_expression
+      left: (identifier)
+      right: (identifier)))
 )
 
 ===============================
@@ -57,37 +56,37 @@ test = function(); print("test"); end function
 
 (source_file
   (assignment_statement
-    left: (identifier)
-    right: (function_definition
+    (variable (identifier))
+    (function_definition
       parameters: (parameters)))
   (assignment_statement
-    left: (identifier)
-    right: (function_definition
+    (variable (identifier))
+    (function_definition
       parameters: (parameters
         name: (identifier)
         default: (literal (number)))
-      (block
+      body: (block
         (expression_statement
           (function_call
             name: (identifier)
             arguments: (arguments
-              (expression (identifier)))))
+              (identifier))))
         (expression_statement
           (function_call
             name: (identifier)
             arguments: (arguments
-              (expression (identifier)))))
+              (identifier))))
       )))
   (assignment_statement
-    left: (identifier)
-    right: (function_definition
+    (variable (identifier))
+    (function_definition
       parameters: (parameters)
-      (block
+      body: (block
         (expression_statement
           (function_call
             name: (identifier)
             arguments: (arguments
-              (expression (literal
-                (string content: (string_content)))))))
+              (literal
+                (string content: (string_content))))))
       )))
 )

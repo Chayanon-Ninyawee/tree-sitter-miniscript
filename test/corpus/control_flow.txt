@@ -13,11 +13,9 @@ continue
 (source_file
   (return_statement)
   (return_statement
-    (expression
-      (literal (number))))
+    (literal (number)))
   (return_statement
-    (expression
-      (literal (string content: (string_content)))))
+    (literal (string content: (string_content))))
   (break_statement)
   (continue_statement)
 )
@@ -34,17 +32,15 @@ end if
 
 (source_file
   (if_statement
-    condition: (expression
-      (binary_expression
-        left: (expression (identifier))
-        right: (expression (literal (number)))))
-    (block
+    condition: (binary_expression
+      left: (identifier)
+      right: (literal (number)))
+    consequence: (block
       (expression_statement
         (function_call
           name: (identifier)
           arguments: (arguments
-            (expression
-              (literal (string content: (string_content)))))))
+            (literal (string content: (string_content))))))
     )
   )
 )
@@ -64,32 +60,28 @@ end if
 
 (source_file
   (if_statement
-    condition: (expression
-      (binary_expression
-        left: (expression (identifier))
-        right: (expression (literal (number)))))
-    (block
+    condition: (binary_expression
+      left: (identifier)
+      right: (literal (number)))
+    consequence: (block
       (expression_statement
         (function_call
           name: (identifier)
           arguments: (arguments
-            (expression
-              (literal (string content: (string_content)))))))
+            (literal (string content: (string_content))))))
       (expression_statement
         (function_call
           name: (identifier)
           arguments: (arguments
-            (expression
-              (literal (string content: (string_content)))))))
+            (literal (string content: (string_content))))))
     )
     alternative: (else_statement
-      (block
+      consequence: (block
         (expression_statement
           (function_call
             name: (identifier)
             arguments: (arguments
-              (expression
-                (literal (string content: (string_content)))))))
+              (literal (string content: (string_content))))))
       )
     )
   )
@@ -111,39 +103,34 @@ end if
 
 (source_file
   (if_statement
-    condition: (expression
-      (binary_expression
-        left: (expression (identifier))
-        right: (expression (literal (number)))))
-    (block
+    condition: (binary_expression
+      left: (identifier)
+      right: (literal (number)))
+    consequence: (block
       (expression_statement
         (function_call
           name: (identifier)
           arguments: (arguments
-            (expression
-              (literal (string content: (string_content)))))))
+            (literal (string content: (string_content))))))
     )
     alternative: (elseif_statement
-      condition: (expression
-        (binary_expression
-          left: (expression (identifier))
-          right: (expression (literal (number)))))
-      (block
+      condition: (binary_expression
+        left: (identifier)
+        right: (literal (number)))
+      consequence: (block
         (expression_statement
           (function_call
             name: (identifier)
             arguments: (arguments
-              (expression
-                (literal (string content: (string_content))))))))
+              (literal (string content: (string_content)))))))
       )
     alternative: (else_statement
-      (block
+      consequence: (block
         (expression_statement
           (function_call
             name: (identifier)
             arguments: (arguments
-              (expression
-                (literal (string content: (string_content)))))))
+              (literal (string content: (string_content))))))
       )
     )
   )
@@ -159,14 +146,12 @@ if true then print("true")
 
 (source_file
   (if_statement_shorthand
-    condition: (expression
-      (literal (true)))
-    (expression_statement
+    condition: (literal (true))
+    consequence: (expression_statement
       (function_call
         name: (identifier)
         arguments: (arguments
-          (expression
-            (literal (string content: (string_content)))))))
+          (literal (string content: (string_content))))))
   )
 )
 
@@ -183,15 +168,13 @@ end for
 (source_file
   (for_statement
     variable: (identifier)
-    list: (expression
-      (identifier))
-    (block
+    list: (identifier)
+    body: (block
       (expression_statement
         (function_call
           name: (identifier)
           arguments: (arguments
-            (expression
-              (identifier)))))
+            (identifier))))
     )
   )
 )
@@ -208,16 +191,15 @@ end while
 
 (source_file
   (while_statement
-    condition: (expression
-      (binary_expression
-        left: (expression (identifier))
-        right: (expression (literal (number)))))
-    (block
+    condition: (binary_expression
+      left: (identifier)
+      right: (literal (number)))
+    body: (block
       (expression_statement
         (function_call
           name: (identifier)
           arguments: (arguments
-            (expression (identifier)))))
+            (identifier))))
     )
   )
 )

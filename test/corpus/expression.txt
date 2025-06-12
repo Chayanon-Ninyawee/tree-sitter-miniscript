@@ -90,21 +90,21 @@ a[:]
   (expression_statement
     (slice_expression
       map: (identifier)
-      start: (expression (literal (number)))
-      end: (expression (literal (number)))))
+      start: (literal (number))
+      end: (literal (number))))
   (expression_statement
     (slice_expression
       map: (identifier)
-      end: (expression (identifier))))
+      end: (identifier)))
   (expression_statement
     (slice_expression
       map: (identifier)
-      start: (expression (identifier))))
+      start: (identifier)))
   (expression_statement
     (slice_expression
       map: (identifier)
-      start: (expression (identifier))
-      end: (expression (identifier))))
+      start: (identifier)
+      end: (identifier)))
   (expression_statement
     (slice_expression
       map: (identifier)))
@@ -124,21 +124,17 @@ x[inner_index][outer_index]
   (expression_statement
     (bracket_index_expression
       map: (identifier)
-      index: (expression
-        (literal
-          (string
-            content: (string_content))))))
+      index: (literal (string content: (string_content)))))
   (expression_statement
     (bracket_index_expression
       map: (identifier)
-      index: (expression
-        (literal (number)))))
+      index: (literal (number))))
   (expression_statement
     (bracket_index_expression
       map: (bracket_index_expression
         map: (identifier)
-        index: (expression (identifier)))
-      index: (expression (identifier))))
+        index: (identifier))
+      index: (identifier)))
 )
 
 =========================
@@ -188,14 +184,14 @@ h("hello", x)
       name: (identifier)
       arguments: 
         (arguments
-          (expression (literal (number))))))
+          (literal (number)))))
   (expression_statement
     (function_call
       name: (identifier)
       arguments:
         (arguments
-          (expression (literal (string content: (string_content))))
-          (expression (identifier)))))
+          (literal (string content: (string_content)))
+          (identifier))))
 )
 
 ==================
@@ -211,13 +207,13 @@ Parenthesized Expression
 (source_file
   (expression_statement
     (parenthesized_expression
-      (expression (literal (number)))))
+      (literal (number))))
   (expression_statement
     (parenthesized_expression
-      (expression (identifier))))
+      (identifier)))
   (expression_statement
     (parenthesized_expression
-      (expression (literal (string content: (string_content))))))
+      (literal (string content: (string_content)))))
 )
 
 ==================
@@ -253,29 +249,29 @@ List Constructor
     (list_constructor))
   (expression_statement
     (list_constructor
-      (expression (literal (number)))))
+      (literal (number))))
   (expression_statement
     (list_constructor
-      (expression (literal (string content: (string_content))))
-      (expression (literal (string content: (string_content))))
-      (expression (identifier))))
+      (literal (string content: (string_content)))
+      (literal (string content: (string_content)))
+      (identifier)))
   (expression_statement
     (list_constructor
-      (expression (identifier))
-      (expression (identifier))
-      (expression (literal (number)))
-      (expression (literal (string content: (string_content))))))
+      (identifier)
+      (identifier)
+      (literal (number))
+      (literal (string content: (string_content)))))
   (expression_statement
     (list_constructor
-      (expression (identifier))
-      (expression (identifier))
-      (expression (identifier))))
+      (identifier)
+      (identifier)
+      (identifier)))
   (expression_statement
     (list_constructor
-      (expression (identifier))
-      (expression (identifier))
-      (expression (literal (number)))
-      (expression (literal (string content: (string_content))))))
+      (identifier)
+      (identifier)
+      (literal (number))
+      (literal (string content: (string_content)))))
 )
 
 ==================
@@ -312,49 +308,49 @@ Map Constructor
   (expression_statement
     (map_constructor
       (pair
-        key: (expression (literal (string content: (string_content))))
-        value: (expression (literal (number))))))
+        key: (literal (string content: (string_content)))
+        value: (literal (number)))))
   (expression_statement
     (map_constructor
       (pair
-        key: (expression (literal (number)))
-        value: (expression (literal (number))))
+        key: (literal (number))
+        value: (literal (number)))
       (pair
-        key: (expression (literal (number)))
-        value: (expression (literal (number))))
+        key: (literal (number))
+        value: (literal (number)))
       (pair
-        key: (expression (literal (number)))
-        value: (expression (literal (number))))))
+        key: (literal (number))
+        value: (literal (number)))))
   (expression_statement
     (map_constructor
       (pair
-        key: (expression (literal (string content: (string_content))))
-        value: (expression (literal (string content: (string_content)))))
+        key: (literal (string content: (string_content)))
+        value: (literal (string content: (string_content))))
       (pair
-        key: (expression (identifier))
-        value: (expression (literal (number))))
+        key: (identifier)
+        value: (literal (number)))
       (pair
-        key: (expression (literal (string content: (string_content))))
-        value: (expression (literal (true))))))
+        key: (literal (string content: (string_content)))
+        value: (literal (true)))))
   (expression_statement
     (map_constructor
       (pair
-        key: (expression (identifier))
-        value: (expression (literal (number))))
+        key: (identifier)
+        value: (literal (number)))
       (pair
-        key: (expression (identifier))
-        value: (expression (literal (number))))))
+        key: (identifier)
+        value: (literal (number)))))
   (expression_statement
     (map_constructor
       (pair
-        key: (expression (literal (string content: (string_content))))
-        value: (expression (literal (number))))
+        key: (literal (string content: (string_content)))
+        value: (literal (number)))
       (pair
-        key: (expression (literal (string content: (string_content))))
-        value: (expression (literal (number))))
+        key: (literal (string content: (string_content)))
+        value: (literal (number)))
       (pair
-        key: (expression (literal (string content: (string_content))))
-        value: (expression (literal (number))))))
+        key: (literal (string content: (string_content)))
+        value: (literal (number)))))
 )
 
 ==================
@@ -377,44 +373,44 @@ a ^ b
 (source_file
   (expression_statement
     (binary_expression
-      left: (expression (literal (number)))
-      right: (expression (literal (number)))))
+      left: (literal (number))
+      right: (literal (number))))
   (expression_statement
     (binary_expression
-      left: (expression (identifier))
-      right: (expression (identifier))))
+      left: (identifier)
+      right: (identifier)))
   (expression_statement
     (binary_expression
-      left: (expression (identifier))
-      right: (expression (literal (number)))))
+      left: (identifier)
+      right: (literal (number))))
   (expression_statement
     (binary_expression
-      left: (expression (identifier))
-      right: (expression (literal (number)))))
+      left: (identifier)
+      right: (literal (number))))
   (expression_statement
     (binary_expression
-      left: (expression (literal (true)))
-      right: (expression (literal (false)))))
+      left: (literal (true))
+      right: (literal (false))))
   (expression_statement
     (binary_expression
-      left: (expression (identifier))
-      right: (expression (identifier))))
+      left: (identifier)
+      right: (identifier)))
   (expression_statement
     (binary_expression
-      left: (expression (identifier))
-      right: (expression (identifier))))
+      left: (identifier)
+      right: (identifier)))
   (expression_statement
     (binary_expression
-      left: (expression (literal (number)))
-      right: (expression (literal (number)))))
+      left: (literal (number))
+      right: (literal (number))))
   (expression_statement
     (binary_expression
-      left: (expression (identifier))
-      right: (expression (identifier))))
+      left: (identifier)
+      right: (identifier)))
   (expression_statement
     (binary_expression
-      left: (expression (identifier))
-      right: (expression (identifier))))
+      left: (identifier)
+      right: (identifier)))
 )
 
 ==================
@@ -432,17 +428,17 @@ new Object
 (source_file
   (expression_statement
     (unary_expression
-      operand: (expression (literal (true)))))
+      operand: (literal (true))))
   (expression_statement
     (unary_expression
-      operand: (expression (identifier))))
+      operand: (identifier)))
   (expression_statement
     (unary_expression
-      operand: (expression (identifier))))
+      operand: (identifier)))
   (expression_statement
     (unary_expression
-      operand: (expression (literal (number)))))
+      operand: (literal (number))))
   (expression_statement
     (unary_expression
-      operand: (expression (identifier))))
+      operand: (identifier)))
 )

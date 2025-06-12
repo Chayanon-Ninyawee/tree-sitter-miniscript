@@ -52,15 +52,15 @@ module.exports = grammar({
     // NOTE: Expression Statement
     // x + y | func() | object.func()
     _expression_statement: ($) =>
-      seq(alias($.expression, $.expression_statement), $._terminator),
+      seq(alias($._expression, $.expression_statement), $._terminator),
 
     // NOTE: Assignment Statement
     // x = 1 | x = function() ... function end
     assignment_statement: ($) =>
       seq(
-        field("left", $._assignable_expression),
-        field("operator", choice("=", "+=", "-=", "*=", "/=", "%=", "^=")),
-        field("right", choice($.expression, $.function_definition)),
+        alias($._assignable_expression, $.variable),
+        choice("=", "+=", "-=", "*=", "/=", "%=", "^="),
+        choice($._expression, $.function_definition),
         $._terminator,
       ),
     _assignable_expression: ($) =>
@@ -77,7 +77,7 @@ module.exports = grammar({
         "function",
         field("parameters", optional($.parameters)),
         $._terminator,
-        optional($.block),
+        field("body", optional($.block)),
         token("end function"),
       ),
     parameters: ($) => seq("(", optional($._parameter_list), ")"),
@@ -110,7 +110,7 @@ module.exports = grammar({
       ),
 
     // NOTE: Expression and Stuff
-    expression: ($) =>
+    _expression: ($) =>
       choice(
         $.identifier,
         $.literal,
@@ -142,16 +142,16 @@ module.exports = grammar({
       seq(
         field("map", $.iprefix_expression),
         "[",
-        field("start", optional($.expression)),
+        field("start", optional($._expression)),
         ":",
-        field("end", optional($.expression)),
+        field("end", optional($._expression)),
         "]",
       ),
     bracket_index_expression: ($) =>
       seq(
         field("map", $.iprefix_expression),
         "[",
-        field("index", $.expression),
+        field("index", $._expression),
         "]",
       ),
     dot_index_expression: ($) =>
@@ -166,17 +166,17 @@ module.exports = grammar({
       seq(field("name", $.iprefix_expression), field("arguments", $.arguments)),
     arguments: ($) =>
       choice(
-        seq("(", optional(list_seq($.expression, ",")), ")"),
+        seq("(", optional(list_seq($._expression, ",")), ")"),
         // TODO: Add function call without () e.g. func "test", "more test"
       ),
 
-    parenthesized_expression: ($) => seq("(", $.expression, ")"),
+    parenthesized_expression: ($) => seq("(", $._expression, ")"),
 
     list_constructor: ($) =>
       seq("[", repeat($._terminator), optional($._expression_list), "]"),
     _expression_list: ($) =>
       list_seq(
-        $.expression,
+        $._expression,
         seq(repeat($._terminator), ",", repeat($._terminator)),
         true,
       ),
@@ -191,10 +191,10 @@ module.exports = grammar({
       ),
     pair: ($) =>
       seq(
-        field("key", $.expression),
+        field("key", $._expression),
         ":",
         repeat($._terminator),
-        field("value", $.expression),
+        field("value", $._expression),
       ),
 
     binary_expression: ($) =>
@@ -218,9 +218,9 @@ module.exports = grammar({
           prec.left(
             precedence,
             seq(
-              field("left", $.expression),
+              field("left", $._expression),
               field("operator", String(operator)),
-              field("right", $.expression),
+              field("right", $._expression),
             ),
           ),
         ),
@@ -228,9 +228,9 @@ module.exports = grammar({
           prec.right(
             precedence,
             seq(
-              field("left", $.expression),
+              field("left", $._expression),
               field("operator", String(operator)),
-              field("right", $.expression),
+              field("right", $._expression),
             ),
           ),
         ),
@@ -241,7 +241,7 @@ module.exports = grammar({
         PREC.UNARY,
         seq(
           field("operator", choice("-", "+", "@", "not", "new")),
-          field("operand", $.expression),
+          field("operand", $._expression),
         ),
       ),
 
@@ -250,13 +250,13 @@ module.exports = grammar({
       choice(
         seq(
           "if",
-          field("condition", $.expression),
+          field("condition", $._expression),
           "then",
-          $.if_shorthand_body_inline,
+          field("consequence", $.if_shorthand_body_inline),
         ),
         seq(
           "if",
-          field("condition", $.expression),
+          field("condition", $._expression),
           "then",
           $.if_shorthand_body_inline,
           "else",
@@ -266,11 +266,14 @@ module.exports = grammar({
     // TODO: Make this cleaner since this is kinda repeat each statement
     if_shorthand_body_inline: ($) =>
       choice(
-        alias($.expression, $.expression_statement),
-        seq(
-          field("left", $._assignable_expression),
-          field("operator", choice("=", "+=", "-=", "*=", "/=", "%=", "^=")),
-          field("right", choice($.expression, $.function_definition)),
+        alias($._expression, $.expression_statement),
+        alias(
+          seq(
+            field("left", $._assignable_expression),
+            field("operator", choice("=", "+=", "-=", "*=", "/=", "%=", "^=")),
+            field("right", choice($._expression, $.function_definition)),
+          ),
+          $.assignment_statement,
         ),
         $.return_statement,
         $.break_statement,
@@ -279,10 +282,10 @@ module.exports = grammar({
     if_statement: ($) =>
       seq(
         "if",
-        field("condition", $.expression),
+        field("condition", $._expression),
         "then",
         $._terminator,
-        optional($.block),
+        field("consequence", optional($.block)),
         repeat(field("alternative", $.elseif_statement)),
         optional(field("alternative", $.else_statement)),
         token("end if"),
@@ -290,35 +293,36 @@ module.exports = grammar({
     elseif_statement: ($) =>
       seq(
         token("else if"),
-        field("condition", $.expression),
+        field("condition", $._expression),
         "then",
         $._terminator,
-        optional($.block),
+        field("consequence", optional($.block)),
       ),
-    else_statement: ($) => seq("else", $._terminator, optional($.block)),
+    else_statement: ($) =>
+      seq("else", $._terminator, field("consequence", optional($.block))),
 
     for_statement: ($) =>
       seq(
         "for",
         field("variable", $.identifier),
         "in",
-        field("list", $.expression),
+        field("list", $._expression),
         $._terminator,
-        optional($.block),
+        field("body", optional($.block)),
         token("end for"),
       ),
 
     while_statement: ($) =>
       seq(
         "while",
-        field("condition", $.expression),
+        field("condition", $._expression),
         $._terminator,
-        optional($.block),
+        field("body", optional($.block)),
         token("end while"),
       ),
 
     return_statement: ($) =>
-      prec.left(0, seq("return", optional($.expression))),
+      prec.left(0, seq("return", optional($._expression))),
 
     break_statement: (_) => "break",
 
@@ -335,8 +339,8 @@ module.exports = grammar({
 
     comment: ($) =>
       seq(
-        field("start", alias("//", "comment_start")),
-        field("content", alias(/[^\r\n]*/, "comment_content")),
+        field("start", "//"),
+        field("content", alias(/[^\r\n]*/, $.comment_content)),
       ),
 
     literal: ($) => choice($.null, $.false, $.true, $.number, $.string),

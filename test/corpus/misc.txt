@@ -1,0 +1,14 @@
+=========================
+Comment
+=========================
+
+// This is a comment
+
+//
+
+---
+
+(source_file
+  (comment content: (comment_content))
+  (comment content: (comment_content))
+)
