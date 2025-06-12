@@ -111,6 +111,9 @@
 
 ;; Constants
 
+(identifier) @constant.builtin
+  (#any-of? @constant.builtin
+    "pi" "globals" "intrinsics" "locals")
 (null) @constant.builtin
 
 [
@@ -146,14 +149,42 @@
       index: (identifier) @function.call)
   ])
 
+(function_call
+  (identifier) @function.builtin
+  (#any-of? @function.builtin
+    ;; built-in functions in Miniscript
+    ; system
+    "print" "refEquals" "stackTrace" "time" "wait" "yield"
+    ; numeric
+    "abs" "acos" "asin" "atan" "bitAnd" "bitOr" "bitXor"
+    "ceil" "char" "cos" "floor" "log" "range" "round" "rnd"
+    "sign" "sin" "sqrt" "str" "tan"
+    ; string/list/map (combined unique entries)
+    "code" "hasIndex" "indexes" "indexOf" "insert" "len"
+    "lower" "remove" "upper" "val" "values" "slice" "split"
+    "join" "pop" "pull" "push" "shuffle" "sort" "sum"
+    "replace"))
+
 ;; (function_call
 ;;   (identifier) @function.builtin
 ;;   (#any-of? @function.builtin
 ;;     ;; built-in functions in Miniscript
-;;     "assert" "collectgarbage" "dofile" "error" "getfenv" "getmetatable" "ipairs"
-;;     "load" "loadfile" "loadstring" "module" "next" "pairs" "pcall" "print"
-;;     "rawequal" "rawget" "rawset" "require" "select" "setfenv" "setmetatable"
-;;     "tonumber" "tostring" "type" "unpack" "xpcall"))
+;;     ; system
+;;     "print" "refEquals" "stackTrace" "time" "wait" "yield"
+;;     ; numeric
+;;     "abs" "acos" "asin" "atan" "bitAnd" "bitOr" "bitXor"
+;;     "ceil" "char" "cos" "floor" "log" "range" "round" "rnd"
+;;     "sign" "sin" "sqrt" "str" "tan"
+;;     ; string
+;;     "code" "hasIndex" "indexes" "indexOf" "insert" "len"
+;;     "lower" "remove" "upper" "val" "values" "slice" "split"
+;;     ; list
+;;     "hasIndex" "indexes" "indexOf" "insert" "join" "len" "pop"
+;;     "pull" "push" "shuffle" "sort" "sum" "remove" "replace"
+;;     "slice"
+;;     ; map
+;;     "hasIndex" "indexes" "indexOf" "len" "pop" "push" "remove"
+;;     "replace" "shuffle" "sum" "values"))
 
 ;; Others
 
