@@ -28,6 +28,8 @@ module.exports = grammar({
 
   extras: ($) => [$.comment, " ", /\t/, /\r/, /\f/],
 
+  externals: ($) => [$._tight_unary_expression_alt],
+
   inline: ($) => [$.iprefix_expression, $.if_shorthand_body_inline],
 
   word: ($) => $.identifier,
@@ -43,6 +45,7 @@ module.exports = grammar({
         $.assignment_statement,
         $._control_flow_statement,
         $._empty_statement,
+        seq(alias($._function_call_alt, $.function_call), $._terminator), // For function call with args but the parenthesises
       ),
 
     _empty_statement: (_) => choice(/\n/, /;\n/),
@@ -139,20 +142,26 @@ module.exports = grammar({
       ),
 
     slice_expression: ($) =>
-      seq(
-        field("map", $.iprefix_expression),
-        "[",
-        field("start", optional($._expression)),
-        ":",
-        field("end", optional($._expression)),
-        "]",
+      prec(
+        1,
+        seq(
+          field("map", $.iprefix_expression),
+          "[",
+          field("start", optional($._expression)),
+          ":",
+          field("end", optional($._expression)),
+          "]",
+        ),
       ),
     bracket_index_expression: ($) =>
-      seq(
-        field("map", $.iprefix_expression),
-        "[",
-        field("index", $._expression),
-        "]",
+      prec(
+        1,
+        seq(
+          field("map", $.iprefix_expression),
+          "[",
+          field("index", $._expression),
+          "]",
+        ),
       ),
     dot_index_expression: ($) =>
       seq(
@@ -162,12 +171,95 @@ module.exports = grammar({
       ),
 
     // NOTE: Only active when function have arg. e.g. foo() not foo
+    // since identifier might be a function call so that require context
+    // And function call with args but no parenthesis cannot be used in
+    // larger statement (e.g. foo(bar x) <- this is not a valid syntax)
     function_call: ($) =>
-      seq(field("name", $.iprefix_expression), field("arguments", $.arguments)),
+      prec(
+        1,
+        seq(
+          field("name", $.iprefix_expression),
+          field("arguments", $.arguments),
+        ),
+      ),
     arguments: ($) =>
+      prec(1, choice(seq("(", optional(list_seq($._expression, ",")), ")"))),
+    // NOTE: For unary_expression in the first argument the parser will
+    // assume that it's a function call when it might be a binary_expression
+    // (e.g. foo -1 | foo +213 * 12) both might be a function_call or a
+    // binary_expression
+    _function_call_alt: ($) =>
+      seq(
+        field("name", $.iprefix_expression),
+        field("arguments", alias($._arguments_alt, $.arguments)),
+      ),
+    _arguments_alt: ($) =>
+      seq($._expression_alt, optional(seq(",", list_seq($._expression, ",")))),
+    _expression_alt: ($) =>
       choice(
-        seq("(", optional(list_seq($._expression, ",")), ")"),
-        // TODO: Add function call without () e.g. func "test", "more test"
+        $.identifier,
+        $.literal,
+        $.slice_expression,
+        $.bracket_index_expression,
+        $.dot_index_expression,
+        $.function_call,
+        $.parenthesized_expression,
+        $.list_constructor,
+        $.map_constructor,
+        alias($._binary_expression_alt, $.binary_expression),
+        alias($._unary_expression_alt, $.unary_expression),
+      ),
+    _binary_expression_alt: ($) =>
+      choice(
+        ...[
+          ["or", PREC.OR],
+          ["and", PREC.AND],
+          ["isa", PREC.AND],
+          ["<", PREC.COMPARE],
+          ["<=", PREC.COMPARE],
+          ["==", PREC.COMPARE],
+          ["!=", PREC.COMPARE],
+          [">=", PREC.COMPARE],
+          [">", PREC.COMPARE],
+          ["+", PREC.PLUS],
+          ["-", PREC.PLUS],
+          ["*", PREC.MULTI],
+          ["/", PREC.MULTI],
+          ["%", PREC.MULTI],
+        ].map(([operator, precedence]) =>
+          prec.left(
+            precedence,
+            seq(
+              field("left", $._expression_alt),
+              field("operator", String(operator)),
+              field("right", $._expression),
+            ),
+          ),
+        ),
+        ...[["^", PREC.POWER]].map(([operator, precedence]) =>
+          prec.right(
+            precedence,
+            seq(
+              field("left", $._expression_alt),
+              field("operator", String(operator)),
+              field("right", $._expression),
+            ),
+          ),
+        ),
+      ),
+    _unary_expression_alt: ($) =>
+      prec.left(
+        PREC.UNARY,
+        choice(
+          seq(
+            field("operator", $._tight_unary_expression_alt),
+            field("operand", $._expression),
+          ),
+          seq(
+            field("operator", choice("@", "not", "new")),
+            field("operand", $._expression),
+          ),
+        ),
       ),
 
     parenthesized_expression: ($) => seq("(", $._expression, ")"),

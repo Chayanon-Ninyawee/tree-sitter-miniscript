@@ -339,6 +339,10 @@
           "named": true
         },
         {
+          "type": "function_call",
+          "named": true
+        },
+        {
           "type": "if_statement",
           "named": true
         },
@@ -1568,6 +1572,10 @@
         },
         {
           "type": "for_statement",
+          "named": true
+        },
+        {
+          "type": "function_call",
           "named": true
         },
         {

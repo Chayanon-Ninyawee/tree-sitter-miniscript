@@ -165,36 +165,6 @@ config.settings.value
 )
 
 ==================
-Function Call
-==================
-
-f()
-g(1)
-h("hello", x)
-
----
-
-(source_file
-  (expression_statement
-    (function_call
-      name: (identifier)
-      arguments: (arguments)))
-  (expression_statement
-    (function_call
-      name: (identifier)
-      arguments: 
-        (arguments
-          (literal (number)))))
-  (expression_statement
-    (function_call
-      name: (identifier)
-      arguments:
-        (arguments
-          (literal (string content: (string_content)))
-          (identifier))))
-)
-
-==================
 Parenthesized Expression
 ==================
 
@@ -358,6 +328,7 @@ Binary Expression
 ==================
 
 1 + 2
+123-321
 x * y
 a / 10
 x % 2
@@ -371,6 +342,10 @@ a ^ b
 ---
 
 (source_file
+  (expression_statement
+    (binary_expression
+      left: (literal (number))
+      right: (literal (number))))
   (expression_statement
     (binary_expression
       left: (literal (number))
@@ -441,4 +416,61 @@ new Object
   (expression_statement
     (unary_expression
       operand: (identifier)))
+)
+
+==================
+Function Call
+==================
+
+f()
+g(1)
+h("hello", x)
+
+---
+
+(source_file
+  (expression_statement
+    (function_call
+      name: (identifier)
+      arguments: (arguments)))
+  (expression_statement
+    (function_call
+      name: (identifier)
+      arguments: 
+        (arguments
+          (literal (number)))))
+  (expression_statement
+    (function_call
+      name: (identifier)
+      arguments:
+        (arguments
+          (literal (string content: (string_content)))
+          (identifier))))
+)
+
+=========================
+Function Call (No Parens)
+=========================
+
+foo x
+bar "hello"
+foo -1
+foo +121+123
+
+---
+(source_file
+      (function_call
+        name: (identifier)
+        arguments: (arguments (identifier)))
+      (function_call
+        name: (identifier)
+        arguments: (arguments (literal (string content: (string_content)))))
+      (function_call
+        name: (identifier)
+        arguments: (arguments (unary_expression operand: (literal (number)))))
+      (function_call
+        name: (identifier)
+        arguments: (arguments (binary_expression
+          left: (unary_expression operand: (literal (number)))
+          right: (literal (number)))))
 )
