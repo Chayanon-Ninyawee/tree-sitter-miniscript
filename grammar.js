@@ -23,6 +23,24 @@ const list_seq = (rule, separator, trailing_separator = false) =>
     ? seq(rule, repeat(seq(separator, rule)), optional(separator))
     : seq(rule, repeat(seq(separator, rule)));
 
+const binaryLeftAssociative = [
+  ["or", PREC.OR],
+  ["and", PREC.AND],
+  ["isa", PREC.AND],
+  ["<", PREC.COMPARE],
+  ["<=", PREC.COMPARE],
+  ["==", PREC.COMPARE],
+  ["!=", PREC.COMPARE],
+  [">=", PREC.COMPARE],
+  [">", PREC.COMPARE],
+  ["+", PREC.PLUS],
+  ["-", PREC.PLUS],
+  ["*", PREC.MULTI],
+  ["/", PREC.MULTI],
+  ["%", PREC.MULTI],
+];
+const binaryRightAssociative = [["^", PREC.POWER]];
+
 module.exports = grammar({
   name: "miniscript",
 
@@ -211,22 +229,7 @@ module.exports = grammar({
       ),
     _binary_expression_alt: ($) =>
       choice(
-        ...[
-          ["or", PREC.OR],
-          ["and", PREC.AND],
-          ["isa", PREC.AND],
-          ["<", PREC.COMPARE],
-          ["<=", PREC.COMPARE],
-          ["==", PREC.COMPARE],
-          ["!=", PREC.COMPARE],
-          [">=", PREC.COMPARE],
-          [">", PREC.COMPARE],
-          ["+", PREC.PLUS],
-          ["-", PREC.PLUS],
-          ["*", PREC.MULTI],
-          ["/", PREC.MULTI],
-          ["%", PREC.MULTI],
-        ].map(([operator, precedence]) =>
+        ...binaryLeftAssociative.map(([operator, precedence]) =>
           prec.left(
             precedence,
             seq(
@@ -236,7 +239,7 @@ module.exports = grammar({
             ),
           ),
         ),
-        ...[["^", PREC.POWER]].map(([operator, precedence]) =>
+        ...binaryRightAssociative.map(([operator, precedence]) =>
           prec.right(
             precedence,
             seq(
@@ -291,22 +294,7 @@ module.exports = grammar({
 
     binary_expression: ($) =>
       choice(
-        ...[
-          ["or", PREC.OR],
-          ["and", PREC.AND],
-          ["isa", PREC.AND],
-          ["<", PREC.COMPARE],
-          ["<=", PREC.COMPARE],
-          ["==", PREC.COMPARE],
-          ["!=", PREC.COMPARE],
-          [">=", PREC.COMPARE],
-          [">", PREC.COMPARE],
-          ["+", PREC.PLUS],
-          ["-", PREC.PLUS],
-          ["*", PREC.MULTI],
-          ["/", PREC.MULTI],
-          ["%", PREC.MULTI],
-        ].map(([operator, precedence]) =>
+        ...binaryLeftAssociative.map(([operator, precedence]) =>
           prec.left(
             precedence,
             seq(
@@ -316,7 +304,7 @@ module.exports = grammar({
             ),
           ),
         ),
-        ...[["^", PREC.POWER]].map(([operator, precedence]) =>
+        ...binaryRightAssociative.map(([operator, precedence]) =>
           prec.right(
             precedence,
             seq(
@@ -441,7 +429,7 @@ module.exports = grammar({
     false: (_) => "false",
     true: (_) => "true",
 
-    number: ($) => {
+    number: (_) => {
       const decimal_digits = /[0-9]+/;
       const signed_integer = seq(optional(choice("-", "+")), decimal_digits);
       const decimal_exponent_part = seq(choice("e", "E"), signed_integer);

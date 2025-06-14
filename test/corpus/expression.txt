@@ -193,13 +193,16 @@ List Constructor
 []
 [42]
 ["apple", "banana", fruit]
+
 [
   a,
   b,
   3,
   "done",
 ]
+
 [x,;y,;z]
+
 [
   a,
 
@@ -250,16 +253,19 @@ Map Constructor
 
 {}
 {"a": 1}
+
 {
   10:1,
   20:2,
   30:3,
 }
+
 {
   "name": "John",
   age: 17,
   "active": true,
 }
+
 {
   a:1,
 
@@ -268,6 +274,7 @@ Map Constructor
 
 2,
 }
+
 {"a": 1,;"b": 2,;"c": 3}
 
 ---

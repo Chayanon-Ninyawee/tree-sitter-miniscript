@@ -46,10 +46,12 @@ Assignment Statement (Function)
 
 empty_func = function()
 end function
+
 foo = function(n=1)
     print(n)
     print(n)
 end function
+
 test = function(); print("test"); end function
 
 ---
