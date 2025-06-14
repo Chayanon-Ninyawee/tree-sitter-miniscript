@@ -48,7 +48,7 @@ module.exports = grammar({
         seq(alias($._function_call_alt, $.function_call), $._terminator), // For function call with args but the parenthesises
       ),
 
-    _empty_statement: (_) => choice(/\n/, /;\n/),
+    _empty_statement: (_) => choice(/\n/, seq(";", /\n/)),
 
     _terminator: (_) => choice(/\n/, ";"),
 

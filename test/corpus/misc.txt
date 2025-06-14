@@ -12,3 +12,15 @@ Comment
   (comment content: (comment_content))
   (comment content: (comment_content))
 )
+
+=========================
+Empty statement
+=========================
+
+;
+ ;
+; 
+
+---
+
+(source_file)
