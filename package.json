@@ -2,7 +2,10 @@
   "name": "tree-sitter-miniscript",
   "version": "1.0.0",
   "description": "Miniscript grammar for tree-sitter",
-  "repository": "https://github.com/chayanon-ninyawee/tree-sitter-miniscript",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chayanon-ninyawee/tree-sitter-miniscript.git"
+  },
   "license": "MIT",
   "author": {
     "name": "Garfieldcmix",
