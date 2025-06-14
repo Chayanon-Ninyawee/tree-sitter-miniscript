@@ -1,6 +1,6 @@
 {
   "name": "@garfieldcmix/tree-sitter-miniscript",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Miniscript grammar for tree-sitter",
   "repository": {
     "type": "git",
