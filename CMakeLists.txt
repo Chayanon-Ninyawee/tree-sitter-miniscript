@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 project(tree-sitter-miniscript
-        VERSION "0.0.0"
+        VERSION "1.0.0"
         DESCRIPTION "Miniscript grammar for tree-sitter"
         HOMEPAGE_URL "https://github.com/chayanon-ninyawee/tree-sitter-miniscript"
         LANGUAGES C)

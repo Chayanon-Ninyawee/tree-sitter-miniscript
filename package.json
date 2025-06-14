@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-miniscript",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Miniscript grammar for tree-sitter",
   "repository": "https://github.com/chayanon-ninyawee/tree-sitter-miniscript",
   "license": "MIT",

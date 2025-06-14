@@ -4,7 +4,7 @@ endif
 
 LANGUAGE_NAME := tree-sitter-miniscript
 HOMEPAGE_URL := https://github.com/chayanon-ninyawee/tree-sitter-miniscript
-VERSION := 0.0.0
+VERSION := 1.0.0
 
 # repository
 SRC_DIR := src
